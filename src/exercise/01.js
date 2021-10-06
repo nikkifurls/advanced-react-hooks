@@ -3,21 +3,32 @@
 
 import * as React from 'react'
 
-function countReducer(previousCount, newCount) {
-  return {
-    ...previousCount,
-    ...(typeof newCount === 'function' ? newCount(previousCount) : newCount),
-  };
+function countReducer(state, action) {
+  const {count} = state;
+  switch (action.type) {
+    case 'INCREMENT':
+      return {count: count + 1};
+    case 'DECREMENT':
+      return {count: count - 1};
+    default:
+      return state;
+  }
+  
 }
 
 function Counter({initialCount = 0, step = 1}) {
-  const [state, setState] = React.useReducer(countReducer, {
+  const [state, dispatch] = React.useReducer(countReducer, {
     count: initialCount,
   });
   const {count} = state;
-  const increment = () =>
-    setState(currentState => ({count: currentState.count + step}))
-  return <button onClick={increment}>{count}</button>
+  const increment = () => dispatch({type: 'INCREMENT', step});
+  const decrement = () => dispatch({type: 'DECREMENT', step});
+  return (
+    <>
+      <button onClick={increment}>+ {count}</button>
+      <button onClick={decrement}>- {count}</button>
+    </>
+  );
 }
 
 function App() {
