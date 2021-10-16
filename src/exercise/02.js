@@ -72,8 +72,6 @@ function PokemonInfo({pokemonName}) {
 
   const {data, status, error} = state
 
-  console.log(state);
-
   if (status === 'idle' || !pokemonName) {
     return 'Submit a pokemon'
   } else if (status === 'pending') {
